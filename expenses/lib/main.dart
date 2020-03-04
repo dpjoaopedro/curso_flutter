@@ -1,4 +1,4 @@
-import 'package:expenses/components/Chart.dart';
+import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'package:expenses/models/transaction.dart';
