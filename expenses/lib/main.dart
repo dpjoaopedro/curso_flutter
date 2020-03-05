@@ -46,7 +46,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final List<Transaction> _transactions = [
     Transaction(
       id: 't0',
@@ -76,7 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Transaction> get _recentTransaction {
     return _transactions.where((transaction) {
-      return transaction.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+      return transaction.date
+          .isAfter(DateTime.now().subtract(Duration(days: 7)));
     }).toList();
   }
 
@@ -89,12 +89,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime selectedDate) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: selectedDate,
     );
 
     setState(() {
@@ -120,9 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              child: Chart(_recentTransaction)
-            ),
+            Container(child: Chart(_recentTransaction)),
             TransactionList(_transactions),
           ],
         ),
