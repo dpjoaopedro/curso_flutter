@@ -51,13 +51,37 @@ class _MyHomePageState extends State<MyHomePage> {
       id: 't0',
       title: 'Conta Antiga',
       value: 310.76,
-      date: DateTime.now().subtract(Duration(days: 33)),
+      date: DateTime.now().subtract(Duration(days: 1)),
     ),
     Transaction(
       id: 't2',
       title: 'Conta de Luz',
       value: 500.99,
       date: DateTime.now().subtract(Duration(days: 2)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Conta de Luz',
+      value: 145.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Conta de Luz',
+      value: 212.99,
+      date: DateTime.now().subtract(Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't5',
+      title: 'Conta de Luz',
+      value: 321.99,
+      date: DateTime.now().subtract(Duration(days: 4)),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'Conta de Luz',
+      value: 124.99,
+      date: DateTime.now().subtract(Duration(days: 5)),
     )
   ];
 
@@ -94,14 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _removeTransactionHandler(String id) {
     setState(() {
-      _transactions.removeWhere((x) => x.id == id);  
+      _transactions.removeWhere((x) => x.id == id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+
+    final appBar = AppBar(
         title: Text("Despesas Pessoais"),
         actions: <Widget>[
           IconButton(
@@ -109,13 +133,25 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () => _openTransactionFormModal(context),
           )
         ],
-      ),
+      );
+
+    final availableHeight = MediaQuery.of(context).size.height
+      - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(child: Chart(_recentTransaction)),
-            TransactionList(_transactions, _removeTransactionHandler),
+            Container(
+              height: availableHeight * 0.3,
+              child: Chart(_recentTransaction),
+            ),
+            Container(
+                height: availableHeight * 0.7,
+                child:
+                    TransactionList(_transactions, _removeTransactionHandler)),
           ],
         ),
       ),
