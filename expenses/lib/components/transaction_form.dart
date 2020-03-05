@@ -57,7 +57,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     alignment: Alignment.centerLeft,
                     child: showDate
                     ? Text(
-                        DateFormat.yMMMEd().format(selectedDate),
+                        'Data: ${DateFormat.yMMMEd().format(selectedDate)}',
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       )
                     : Text(
@@ -68,9 +68,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   RaisedButton(
                     child: Icon(
                       Icons.calendar_today,
-                      color: Colors.white,
                     ),
-                    color: Theme.of(context).primaryColor,
                     onPressed: () async {
                       DateTime picked = await showDatePicker(
                           context: context,
@@ -90,10 +88,14 @@ class _TransactionFormState extends State<TransactionForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                FlatButton(
-                    child: Text('Nova Transação'),
-                    textColor: Colors.purple,
-                    onPressed: _submitForm),
+                Container(
+                  padding: EdgeInsets.only(top: 40),
+                  child: FlatButton(
+                      child: Text('Nova Transação'),
+                      textColor: Colors.white,
+                      color: Theme.of(context).primaryColor,
+                      onPressed: _submitForm),
+                ),
               ],
             )
           ],

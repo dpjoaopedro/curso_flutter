@@ -39,7 +39,7 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(5),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -50,7 +50,7 @@ class Chart extends StatelessWidget {
                     child: ChartBar(
               label: tr['day'],
               value: tr['value'],
-              percentage: (tr['value'] as double) / _weekTotalValue,
+              percentage: _weekTotalValue == 0 ? 0 : (tr['value'] as double) / _weekTotalValue,
             ),
           );
         }).toList()),
