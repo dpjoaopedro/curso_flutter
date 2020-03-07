@@ -85,10 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   ];
 
+  bool _showChart = false;
+
   List<Transaction> get _recentTransaction {
     return _transactions.where((transaction) {
-      return transaction.date
-          .isAfter(DateTime.now().subtract(Duration(days: 7)));
+      return transaction.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
     }).toList();
   }
 
@@ -109,9 +114,11 @@ class _MyHomePageState extends State<MyHomePage> {
       date: selectedDate,
     );
 
-    setState(() {
-      _transactions.add(newTransaction);
-    });
+    setState(
+      () {
+        _transactions.add(newTransaction);
+      },
+    );
 
     Navigator.of(context).pop();
   }
@@ -124,19 +131,32 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    bool isLandscape =
+        mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
-        title: Text("Despesas Pessoais"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _openTransactionFormModal(context),
-          )
-        ],
-      );
+      title: Text("Despesas Pessoais"),
+      actions: <Widget>[
+        if (isLandscape)
+        IconButton(
+          icon: Icon(_showChart ? Icons.list : Icons.insert_chart),
+          onPressed: () {
+            setState(() {
+              _showChart = !_showChart;
+            });
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _openTransactionFormModal(context),
+        ),
+      ],
+    );
 
-    final availableHeight = MediaQuery.of(context).size.height
-      - appBar.preferredSize.height - MediaQuery.of(context).padding.top;
+    final availableHeight = mediaQuery.size.height -
+        appBar.preferredSize.height -
+        mediaQuery.padding.top;
 
     return Scaffold(
       appBar: appBar,
@@ -144,14 +164,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              height: availableHeight * 0.3,
-              child: Chart(_recentTransaction),
-            ),
-            Container(
-                height: availableHeight * 0.7,
+            if (_showChart || !isLandscape)
+              Container(
+                height: availableHeight * (isLandscape ? 0.7 : 0.30),
+                child: Chart(_recentTransaction),
+              ),
+            if (!_showChart || !isLandscape)
+              Container(
+                height: availableHeight * (isLandscape ? 1 : 0.70),
                 child:
-                    TransactionList(_transactions, _removeTransactionHandler)),
+                    TransactionList(_transactions, _removeTransactionHandler),
+              ),
           ],
         ),
       ),
